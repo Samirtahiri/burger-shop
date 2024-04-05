@@ -1,0 +1,5 @@
+{
+  "breadTypes": ["Classic", "Brown", "Rice flour"],
+  "hamburgerTypes": ["Beef", "Chicken", "Vegetable", "Gluten-free"],
+  "ingredients": ["Lettuce", "Cheddar", "Ketchup", "Mayonnaise", "Onion"]
+}

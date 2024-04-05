@@ -1,0 +1,73 @@
+<div class="form-container">
+  <h2 class="form-title">Burger Order Form</h2>
+
+  <form [formGroup]="burgerForm" class="form">
+
+    <div class="form-grid">
+      <div class="form-left">
+        <div class="form-group ">
+          <label for="numberOfBurgers" class="form-label">Number of Burgers:</label>
+          <input type="number" id="numberOfBurgers" formControlName="numberOfBurgers" class="form-input" (keyup)="updateBurgers()">
+          <div *ngIf="burgerForm.get('numberOfBurgers')?.invalid && (burgerForm.get('numberOfBurgers')?.dirty || burgerForm.get('numberOfBurgers')?.touched)" class="error-message">
+            <span *ngIf="burgerForm.get('numberOfBurgers')?.hasError('required')" class="error-text">Number of burgers is required.</span>
+            <span *ngIf="burgerForm.get('numberOfBurgers')?.hasError('min')" class="error-text">Number of burgers must be greater than or equal to 1.</span>
+          </div>
+        </div>
+
+        <div class="form-group inp-label-flex">
+          <label for="tableNumber" class="form-label">Table Number:</label>
+          <input type="text" id="tableNumber" formControlName="tableNumber" class="form-input">
+          <div *ngIf="burgerForm.get('tableNumber')?.invalid && (burgerForm.get('tableNumber')?.dirty || burgerForm.get('tableNumber')?.touched)" class="error-message">
+            <span class="error-text">Table number is required.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-right">
+        <div formArrayName="burgers" *ngFor="let burger of burgers.controls; let i = index" class="burger-section">
+          <div [formGroupName]="i" class="burger">
+            <h3 class="burger-title">Burger {{ i + 1 }}</h3>
+            <div class="form-group inp-label-flex">
+              <label class="form-label">Bread Type:</label>
+              <p-dropdown id="breadType" [formControlName]="'breadType'" [options]="selectOptions.breadTypes" placeholder="Select Bread Type"></p-dropdown>
+              <div *ngIf="getControl('breadType', i)?.invalid && (getControl('breadType', i)?.dirty || getControl('breadType', i)?.touched)" class="error-message">
+                <span class="error-text">Bread type is required.</span>
+              </div>
+            </div>
+
+            <div class="form-group inp-label-flex">
+              <label class="form-label">Hamburger Type:</label>
+              <p-dropdown id="hamburger" [formControlName]="'hamburger'" [options]="selectOptions.hamburgerTypes" placeholder="Select hamburger Type"></p-dropdown>
+              <div *ngIf="getControl('hamburger', i)?.invalid && (getControl('hamburger', i)?.dirty || getControl('hamburger', i)?.touched)" class="error-message">
+                <span class="error-text">Hamburger type is required.</span>
+              </div>
+            </div>
+
+            <div class="form-group inp-label-flex">
+              <label class="form-label">Ingredients:</label>
+              <p-multiSelect [options]="selectOptions?.ingredients" formControlName="ingredients" placeholder="Select Ingedients"></p-multiSelect>
+            </div>
+
+            <div class="form-group inp-label-flex" *ngIf="getControl('hamburger', i)?.value === 'Beef' || getControl('hamburger', i)?.value === 'Gluten-free'">
+              <label for="rareCooking" class="form-label">Rare Cooking:</label>
+              <p-inputSwitch id="rareCooking" formControlName="rareCooking"></p-inputSwitch>
+              <div *ngIf="getControl('rareCooking', i)?.invalid && (getControl('rareCooking', i)?.dirty || getControl('rareCooking', i)?.touched)" class="error-message">
+                <span class="error-text">Rare cooking option is required for Beef or Gluten-free hamburgers.</span>
+              </div>
+            </div>
+
+            <div class="form-group inp-label-flex">
+              <label for="notes" class="form-label">Notes:</label>
+              <textarea id="notes" formControlName="notes" class="form-input"></textarea>
+            </div>
+
+            <p-button label="Remove Burge" severity="danger" (click)="removeBurger(i)"></p-button>
+          </div>
+          <hr>
+        </div>
+      </div>
+    </div>
+
+    <p-button label="Success" severity="success" (click)="submitForm()"></p-button>
+  </form>
+</div>
